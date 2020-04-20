@@ -9,16 +9,15 @@ def loginScreen():
     password = input("Password: ")
 
     userData = open('loginData.txt', 'r')
-    userName, userPass = userData.readlines()
+    data = userData.read().splitlines()
 
-    print(userName + userPass)
+    userName, userPass = data[:2]
 
+    if name == userName and password == userPass:
+        print("Welcome Anna")
 
-#    if name == userName and password == userPass:
-#        print("Welcome Anna")
-#
-#    else:
-#        print("Module Record System - Login Failed")
+    else:
+        print("Module Record System - Login Failed")
 
 
 def mainMenuScreen():
@@ -49,7 +48,6 @@ def recordAttendanceScreen():
     userOption1 = int(input("1. SOFT_6017"
                             "2. COMP_1234"
                             ">>"))
-
 
 
 def main():
