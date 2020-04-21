@@ -22,17 +22,32 @@ def loginScreen():
 
 def mainMenuScreen():
     print("Module Record System - Options")
-    userOption = int(input("1. Record Attendance"
-                           "\n2. Generate Statistics"
-                           "\n3. Exit"
-                           "\n>>"))
+
+    while True:
+        try:
+            userOption = int(input("1. Record Attendance"
+                                   "\n2. Generate Statistics"
+                                   "\n3. Exit"
+                                   "\n>>"))
+            break
+
+        except ValueError:
+            print("Must be a number!")
+
 
 
 def genStatScreen():
     print("Module Record System(Statistics) - Choose a Module")
-    userOption = int(input("1. SOFT_6017"
-                           "2. COMP_1234"
-                           ">>"))
+
+    while True:
+        try:
+            userOption = int(input("1. SOFT_6017"
+                                   "2. COMP_1234"
+                                   ">>"))
+            break
+
+        except ValueError:
+            print("Must be a number!")
 
     print("Module: "
           "\nNumber of students: "
@@ -45,9 +60,16 @@ def genStatScreen():
 
 def recordAttendanceScreen():
     print("Module Record System(Attendance) - Choose a Module")
-    userOption1 = int(input("1. SOFT_6017"
-                            "2. COMP_1234"
-                            ">>"))
+
+    while True:
+        try:
+            userOption1 = int(input("1. SOFT_6017"
+                                    "2. COMP_1234"
+                                    ">>"))
+            break
+
+        except ValueError:
+            print("Must be a number!")
 
 
 def main():
