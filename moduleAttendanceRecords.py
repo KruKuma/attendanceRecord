@@ -37,6 +37,7 @@ def loginScreen():
 def mainMenuScreen():
     print("Module Record System - Options")
     writeLine()
+
     while True:
         userOption = checkForNum("1. Record Attendance"
                                  "\n2. Generate Statistics"
@@ -45,15 +46,21 @@ def mainMenuScreen():
         if 0 < userOption <= 3:
             break
         else:
-            print("Invalid input")
+            print("Invalid input! Must be a number between 1 to 3")
 
 
 def genStatScreen():
     print("Module Record System(Statistics) - Choose a Module")
     writeLine()
-    userOption = checkForNum("1. SOFT_6017"
-                             "2. COMP_1234"
-                             ">>")
+
+    while True:
+        userOption = checkForNum("1. SOFT_6017"
+                                 "2. COMP_1234"
+                                 ">>")
+        if 0 < userOption <= 2:
+            break
+        else:
+            print("Invalid input! Must be a number between 1 to 2")
 
     print("Module: "
           "\nNumber of students: "
@@ -67,9 +74,15 @@ def genStatScreen():
 def recordAttendanceScreen():
     print("Module Record System(Attendance) - Choose a Module")
     writeLine()
-    userOption1 = checkForNum("1. SOFT_6017"
-                              "2. COMP_1234"
-                              ">>")
+
+    while True:
+        userOption1 = checkForNum("1. SOFT_6017"
+                                  "2. COMP_1234"
+                                  ">>")
+        if 0 < userOption1 <= 2:
+            break
+        else:
+            print("Invalid input! Must be a number between 1 to 2")
 
 
 def main():
