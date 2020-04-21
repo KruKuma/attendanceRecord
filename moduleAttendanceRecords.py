@@ -4,6 +4,20 @@
 #                   module that they teach.
 
 
+def writeLine():
+    print("-" * 35)
+
+
+def checkForNum(prompt):
+    while True:
+        try:
+            number = int(input(prompt))
+            break
+        except ValueError:
+            print("Must be numeric...")
+    return number
+
+
 def loginScreen():
     name = input("Name: ")
     password = input("Password: ")
@@ -22,32 +36,24 @@ def loginScreen():
 
 def mainMenuScreen():
     print("Module Record System - Options")
-
+    writeLine()
     while True:
-        try:
-            userOption = int(input("1. Record Attendance"
-                                   "\n2. Generate Statistics"
-                                   "\n3. Exit"
-                                   "\n>>"))
+        userOption = checkForNum("1. Record Attendance"
+                                 "\n2. Generate Statistics"
+                                 "\n3. Exit"
+                                 "\n>>")
+        if 0 < userOption <= 3:
             break
-
-        except ValueError:
-            print("Must be a number!")
-
+        else:
+            print("Invalid input")
 
 
 def genStatScreen():
     print("Module Record System(Statistics) - Choose a Module")
-
-    while True:
-        try:
-            userOption = int(input("1. SOFT_6017"
-                                   "2. COMP_1234"
-                                   ">>"))
-            break
-
-        except ValueError:
-            print("Must be a number!")
+    writeLine()
+    userOption = checkForNum("1. SOFT_6017"
+                             "2. COMP_1234"
+                             ">>")
 
     print("Module: "
           "\nNumber of students: "
@@ -60,16 +66,10 @@ def genStatScreen():
 
 def recordAttendanceScreen():
     print("Module Record System(Attendance) - Choose a Module")
-
-    while True:
-        try:
-            userOption1 = int(input("1. SOFT_6017"
-                                    "2. COMP_1234"
-                                    ">>"))
-            break
-
-        except ValueError:
-            print("Must be a number!")
+    writeLine()
+    userOption1 = checkForNum("1. SOFT_6017"
+                              "2. COMP_1234"
+                              ">>")
 
 
 def main():
