@@ -34,6 +34,62 @@ def loginScreen():
         print("Module Record System - Login Failed")
 
 
+def loadModules():
+    moduleInfo = open('modules.txt', 'r')
+    moduleCodeList = []
+    moduleNameList = []
+
+    while True:
+        line = moduleInfo.readline().strip()
+        if line == "":
+            break
+        lineData = line.split(', ')
+        moduleCodeList.append(lineData[0])
+        moduleNameList.append(lineData[1])
+
+    moduleInfo.close()
+
+#    print(moduleCodeList)
+#    print(moduleNameList)
+
+    return moduleCodeList, moduleNameList
+
+
+def getClassAttendance(moduldeCode):
+    classData = open(moduldeCode, 'r')
+    studentNameList = []
+    presentList = []
+    absentList = []
+    excuseList = []
+
+    while True:
+        line = classData.readline().strip()
+        if line == "":
+            break
+        lineData = line.split(',')
+        studentNameList.append(lineData[0])
+        presentList.append(lineData[1])
+        absentList.append(lineData[2])
+        excuseList.append(lineData[3])
+
+    classData.close()
+
+#    print(studentNameList)
+#    print(presentList)
+#    print(absentList)
+#    print(excuseList)
+
+    return studentNameList, presentList, absentList, excuseList
+
+
+def takeClassAttendance(moduleCode, studentNameList, presentList, absentList, excuseList):
+    classData = open("testModule.txt", "w")
+    for x in range(0, 3):
+        print(f"{studentNameList[x]},{presentList[x]},{absentList[x]},{excuseList[x]}", file=classData)
+
+    classData.close()
+
+
 def mainMenuScreen():
     print("Module Record System - Options")
     writeLine()
@@ -92,4 +148,5 @@ def main():
     recordAttendanceScreen()
 
 
-main()
+#   studentNameList, presentList, absentList, excuseList = getClassAttendance("SOFT_6017.txt")
+#   takeClassAttendance("test", studentNameList, presentList, absentList, excuseList)
