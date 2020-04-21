@@ -83,6 +83,13 @@ def getClassAttendance(moduldeCode):
 
 
 def takeClassAttendance(moduleCode, studentNameList, presentList, absentList, excuseList):
+    print("Module Record System(Attendance) - Choose a Module")
+    writeLine()
+    option = checkForNum("1. SOFT_6017"
+                         "\n2. COMP_1234")
+
+
+def updateClassDate(moduleCode, studentNameList, presentList, absentList, excuseList):
     classData = open("testModule.txt", "w")
     for x in range(0, 3):
         print(f"{studentNameList[x]},{presentList[x]},{absentList[x]},{excuseList[x]}", file=classData)
