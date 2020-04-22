@@ -68,16 +68,15 @@ def getClassAttendance(moduldeCode):
             break
         lineData = line.split(',')
         studentNameList.append(lineData[0])
-        presentList.append(lineData[1])
-        absentList.append(lineData[2])
-        excuseList.append(lineData[3])
+        presentList.append(int(lineData[1]))
+        absentList.append(int(lineData[2]))
+        excuseList.append(int(lineData[3]))
 
     classData.close()
 
-#    print(studentNameList)
-#    print(presentList)
-#    print(absentList)
-#    print(excuseList)
+    #    print(presentList)
+    #    print(absentList)
+    #    print(excuseList)
 
     return studentNameList, presentList, absentList, excuseList
 
@@ -154,6 +153,6 @@ def main():
     genStatScreen()
     recordAttendanceScreen()
 
-
+#   main()
 #   studentNameList, presentList, absentList, excuseList = getClassAttendance("SOFT_6017.txt")
 #   takeClassAttendance("test", studentNameList, presentList, absentList, excuseList)
