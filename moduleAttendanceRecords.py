@@ -15,6 +15,7 @@ def checkForNum(prompt):
             break
         except ValueError:
             print("Must be numeric...")
+
     return number
 
 
@@ -49,14 +50,56 @@ def loadModules():
 
     moduleInfo.close()
 
-#    print(moduleCodeList)
-#    print(moduleNameList)
+    print(moduleCodeList)
+    print(moduleNameList)
 
     return moduleCodeList, moduleNameList
 
 
-def getClassAttendance(moduldeCode):
-    classData = open(moduldeCode, 'r')
+def mainMenuScreen():
+    print("Module Record System - Options")
+    writeLine()
+
+    while True:
+        userOption = checkForNum("1. Record Attendance"
+                                 "\n2. Generate Statistics"
+                                 "\n3. Exit"
+                                 "\n>>")
+        if 0 < userOption <= 3:
+            break
+        else:
+            print("Invalid input! Must be a number between 1 to 3")
+
+    if userOption == 1:
+        option = 1
+    if userOption == 2:
+        option = 2
+    if userOption == 3:
+        exit()
+
+    return option
+
+
+def recordAttendanceMainScreen(moduleCodeList):
+    print("Module Record System(Attendance) - Choose a Module")
+    writeLine()
+
+    numModule = len(moduleCodeList)
+    optionStr = ""
+
+    for i, option in enumerate(moduleCodeList):
+        optionStr += f"{i + 1}. {option}\n"
+
+    while True:
+        userOption = checkForNum(optionStr)
+        if 0 < userOption <= numModule:
+            break
+        else:
+            print("Invalid input! Must be a number between 1 to 2")
+
+
+def getClassAttendance(moduleCode):
+    classData = open(moduleCode, 'r')
     studentNameList = []
     presentList = []
     absentList = []
@@ -96,29 +139,14 @@ def updateClassDate(moduleCode, studentNameList, presentList, absentList, excuse
     classData.close()
 
 
-def mainMenuScreen():
-    print("Module Record System - Options")
-    writeLine()
-
-    while True:
-        userOption = checkForNum("1. Record Attendance"
-                                 "\n2. Generate Statistics"
-                                 "\n3. Exit"
-                                 "\n>>")
-        if 0 < userOption <= 3:
-            break
-        else:
-            print("Invalid input! Must be a number between 1 to 3")
-
-
 def genStatScreen():
     print("Module Record System(Statistics) - Choose a Module")
     writeLine()
 
     while True:
         userOption = checkForNum("1. SOFT_6017"
-                                 "2. COMP_1234"
-                                 ">>")
+                                 "\n2. COMP_1234"
+                                 "\n>>")
         if 0 < userOption <= 2:
             break
         else:
@@ -133,26 +161,23 @@ def genStatScreen():
           "\nBest Attender(s): ")
 
 
-def recordAttendanceScreen():
-    print("Module Record System(Attendance) - Choose a Module")
-    writeLine()
-
-    while True:
-        userOption1 = checkForNum("1. SOFT_6017"
-                                  "2. COMP_1234"
-                                  ">>")
-        if 0 < userOption1 <= 2:
-            break
-        else:
-            print("Invalid input! Must be a number between 1 to 2")
-
-
 def main():
     loginScreen()
-    mainMenuScreen()
-    genStatScreen()
-    recordAttendanceScreen()
+    modeCodeList, moduleNameList = loadModules()
+    mainMenuChoice = mainMenuScreen()
+
+    if mainMenuChoice == 1:
+        moduleCode = recordAttendanceMainScreen(modeCodeList)
+        takeClassAttendance(moduleCode, studentNameList, presentList, absentList, excuseList)
+
+    if mainMenuChoice == 2:
+        genStatScreen()
+
 
 #   main()
 #   studentNameList, presentList, absentList, excuseList = getClassAttendance("SOFT_6017.txt")
 #   takeClassAttendance("test", studentNameList, presentList, absentList, excuseList)
+
+
+modeCodeList, moduleNameList = loadModules()
+moduleCode = recordAttendanceMainScreen(modeCodeList)
