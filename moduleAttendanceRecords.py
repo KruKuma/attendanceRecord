@@ -3,6 +3,8 @@
 #   Description:    The Module Attendance Records programme will allow a lecturer do the following tasks for any
 #                   module that they teach.
 
+import numpy as np
+
 
 def writeLine():
     print("-" * 35)
@@ -20,19 +22,21 @@ def checkForNum(prompt):
 
 
 def loginScreen():
-    name = input("Name: ")
-    password = input("Password: ")
+    while True:
+        name = input("Name: ")
+        password = input("Password: ")
 
-    userData = open('loginData.txt', 'r')
-    data = userData.read().splitlines()
+        userData = open('loginData.txt', 'r')
+        data = userData.read().splitlines()
 
-    userName, userPass = data[:2]
+        userName, userPass = data[:2]
 
-    if name == userName and password == userPass:
-        print("Welcome Anna")
+        if name == userName and password == userPass:
+            print("Welcome Anna")
+            break
 
-    else:
-        print("Module Record System - Login Failed")
+        else:
+            print("Module Record System - Login Failed")
 
 
 def loadModules():
@@ -50,8 +54,8 @@ def loadModules():
 
     moduleInfo.close()
 
-#    print(moduleCodeList)
-#    print(moduleNameList)
+    #    print(moduleCodeList)
+    #    print(moduleNameList)
 
     return moduleCodeList, moduleNameList
 
@@ -85,8 +89,8 @@ def recordAttendanceMainScreen(moduleCodeList):
     writeLine()
 
     while True:
-        userOption = checkForNum("1. SOFT_6017"
-                                 "\n2. SOFT_18"
+        userOption = checkForNum(f"1. {moduleCodeList[0]}"
+                                 f"\n2. {moduleCodeList[1]}"
                                  "\n>>>")
 
         if userOption == 1:
@@ -155,44 +159,93 @@ def updateClassDate(moduleCode, studentNameList, presentList, absentList, excuse
     print(f"{moduleCode}.txt updated with latest attendance records")
 
     classData.close()
+    writeLine()
 
 
-def genStatScreen():
+def genStatScreen(moduleCodeList):
     print("Module Record System(Statistics) - Choose a Module")
     writeLine()
 
     while True:
-        userOption = checkForNum("1. SOFT_6017"
-                                 "\n2. COMP_1234"
+        userOption = checkForNum(f"1. {moduleCodeList[0]}"
+                                 f"\n2. {moduleCodeList[1]}"
                                  "\n>>")
-        if 0 < userOption <= 2:
+        if userOption == 1:
+            moduleCode = "SOFT_6017"
+            break
+        elif userOption == 2:
+            moduleCode = "SOFT_6018"
             break
         else:
             print("Invalid input! Must be a number between 1 to 2")
 
-    print("Module: "
-          "\nNumber of students: "
-          "\nNumber of Classes: "
-          "\nAverage Attendance: "
-          "\nLow Attender(s): "
-          "\nNon Attender(s): "
-          "\nBest Attender(s): ")
+    return moduleCode
+
+
+def generateAndSaveStats(moduleCode, studentNameList, presentList, absentList, excuseList):
+    totalClasses = calTotalDays(presentList, absentList, excuseList)
+    attendanceRateList = calAttendanceRate(presentList, absentList, excuseList)
+    numStudent = len(studentNameList)
+    avgAttendance = sum(presentList) / len(presentList)
+
+    names = np.array(studentNameList)
+    values = np.array(attendanceRateList)
+
+    lowAttendanceRateName = names[np.where(values < 70)]
+    nonAttenderName = names[np.where(values == 0)]
+    bestAttenderName = names[np.where(values == max(values))[0]]
+
+    print(f"Module: {moduleCode}"
+          f"\nNumber of students: {numStudent}"
+          f"\nNumber of Classes: {totalClasses}"
+          f"\nAverage Attendance: {avgAttendance}")
+
+    print("Low Attender(s):")
+    for names in lowAttendanceRateName:
+        print(f"\t\t{names}")
+
+    print("None Attender(s):")
+    for names in nonAttenderName:
+        print(f"\t\t{names}")
+
+    print("Best Attender(s):")
+    for names in bestAttenderName:
+        print(f"\t\t{names}")
+
+    writeLine()
+
+
+def calTotalDays(presentList, absentList, excuseList):
+    totalDays = presentList[1] + absentList[1] + excuseList[1]
+
+    return totalDays
+
+
+def calAttendanceRate(presentList, absentList, excuseList):
+    attendanceRateList = []
+    for i in range(len(presentList)):
+        rate = ((presentList[i] / (presentList[i] + absentList[i] + excuseList[i])) * 100)
+        attendanceRateList.append(rate)
+
+    return attendanceRateList
 
 
 def main():
     loginScreen()
     moduleCodeList, moduleNameList = loadModules()
-    mainMenuChoice = mainMenuScreen()
 
-    if mainMenuChoice == 1:
-        module = recordAttendanceMainScreen(moduleCodeList)
-        studentNameList, presentList, absentList, excuseList = getClassAttendance(module)
-        takeClassAttendance(module, studentNameList, presentList, absentList, excuseList)
+    while True:
+        mainMenuChoice = mainMenuScreen()
 
-    if mainMenuChoice == 2:
-        genStatScreen()
+        if mainMenuChoice == 1:
+            moduleCode = recordAttendanceMainScreen(moduleCodeList)
+            studentNameList, presentList, absentList, excuseList = getClassAttendance(moduleCode)
+            takeClassAttendance(moduleCode, studentNameList, presentList, absentList, excuseList)
+
+        if mainMenuChoice == 2:
+            moduleCode = genStatScreen(moduleCodeList)
+            studentNameList, presentList, absentList, excuseList = getClassAttendance(moduleCode)
+            generateAndSaveStats(moduleCode, studentNameList, presentList, absentList, excuseList)
 
 
 main()
-#   studentNameList, presentList, absentList, excuseList = getClassAttendance("SOFT_6017.txt")
-#   takeClassAttendance("test", studentNameList, presentList, absentList, excuseList)

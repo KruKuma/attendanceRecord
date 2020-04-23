@@ -1,2 +1,2 @@
-Mary Peters, 6, 3,1
-Fred Fox, 10, 0,0
+Mary Peters,8,3,1
+Fred Fox,12,0,0
