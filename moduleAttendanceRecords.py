@@ -50,8 +50,8 @@ def loadModules():
 
     moduleInfo.close()
 
-    print(moduleCodeList)
-    print(moduleNameList)
+#    print(moduleCodeList)
+#    print(moduleNameList)
 
     return moduleCodeList, moduleNameList
 
@@ -84,22 +84,25 @@ def recordAttendanceMainScreen(moduleCodeList):
     print("Module Record System(Attendance) - Choose a Module")
     writeLine()
 
-    numModule = len(moduleCodeList)
-    optionStr = ""
-
-    for i, option in enumerate(moduleCodeList):
-        optionStr += f"{i + 1}. {option}\n"
-
     while True:
-        userOption = checkForNum(optionStr)
-        if 0 < userOption <= numModule:
+        userOption = checkForNum("1. SOFT_6017"
+                                 "\n2. SOFT_18"
+                                 "\n>>>")
+
+        if userOption == 1:
+            moduleCode = "SOFT_6017"
+            break
+        elif userOption == 2:
+            moduleCode = "SOFT_6018"
             break
         else:
             print("Invalid input! Must be a number between 1 to 2")
 
+    return moduleCode
+
 
 def getClassAttendance(moduleCode):
-    classData = open(moduleCode, 'r')
+    classData = open(f"{moduleCode}.txt", 'r')
     studentNameList = []
     presentList = []
     absentList = []
@@ -125,16 +128,31 @@ def getClassAttendance(moduleCode):
 
 
 def takeClassAttendance(moduleCode, studentNameList, presentList, absentList, excuseList):
-    print("Module Record System(Attendance) - Choose a Module")
+    print(f"Module Record System(Attendance) - {moduleCode}")
     writeLine()
-    option = checkForNum("1. SOFT_6017"
-                         "\n2. COMP_1234")
+    print(f"There are {len(studentNameList)} students enrolled.")
+    for i, student in enumerate(studentNameList):
+        attendance = int(input(f"Student #{i + 1}: {studentNameList[i]}\n"
+                               f"1. Present\n"
+                               f"2. Absent\n"
+                               f"3. Excused\n> "))
+        if attendance == 1:
+            presentList[i] += 1
+        if attendance == 2:
+            absentList[i] += 1
+        if attendance == 3:
+            excuseList[i] += 1
+
+    updateClassDate(moduleCode, studentNameList, presentList, absentList, excuseList)
 
 
 def updateClassDate(moduleCode, studentNameList, presentList, absentList, excuseList):
-    classData = open("testModule.txt", "w")
-    for x in range(0, 3):
+    classData = open(f"{moduleCode}.txt", "w")
+
+    for x in range(len(studentNameList)):
         print(f"{studentNameList[x]},{presentList[x]},{absentList[x]},{excuseList[x]}", file=classData)
+
+    print(f"{moduleCode}.txt updated with latest attendance records")
 
     classData.close()
 
@@ -163,21 +181,18 @@ def genStatScreen():
 
 def main():
     loginScreen()
-    modeCodeList, moduleNameList = loadModules()
+    moduleCodeList, moduleNameList = loadModules()
     mainMenuChoice = mainMenuScreen()
 
     if mainMenuChoice == 1:
-        moduleCode = recordAttendanceMainScreen(modeCodeList)
-        takeClassAttendance(moduleCode, studentNameList, presentList, absentList, excuseList)
+        module = recordAttendanceMainScreen(moduleCodeList)
+        studentNameList, presentList, absentList, excuseList = getClassAttendance(module)
+        takeClassAttendance(module, studentNameList, presentList, absentList, excuseList)
 
     if mainMenuChoice == 2:
         genStatScreen()
 
 
-#   main()
+main()
 #   studentNameList, presentList, absentList, excuseList = getClassAttendance("SOFT_6017.txt")
 #   takeClassAttendance("test", studentNameList, presentList, absentList, excuseList)
-
-
-modeCodeList, moduleNameList = loadModules()
-moduleCode = recordAttendanceMainScreen(modeCodeList)
