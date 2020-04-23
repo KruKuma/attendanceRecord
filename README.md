@@ -1,3 +1,2 @@
 # attendanceRecord
-# Author:       KruKuma/KruThai
-# Description:  Programme for taking attends for Class Project 2020
+Programme for taking attends record and generate stat from the record files for Class Project 2020
